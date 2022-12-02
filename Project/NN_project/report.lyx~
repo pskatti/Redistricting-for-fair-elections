@@ -1,0 +1,600 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass desearticle
+\begin_preamble
+\Author{Mujammil Hamid Patel}
+\Afil{DESE, IISc}
+\Journal{Electronic Systems Packaging}
+\Month{Oct-Jan}
+\Year{2020}
+% Added by lyx2lyx
+\renewcommand{\textendash}{--}
+\renewcommand{\textemdash}{---}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding default
+\font_roman "times" "default"
+\font_sans "helvet" "default"
+\font_typewriter "courier" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.5cm
+\topmargin 2.5cm
+\rightmargin 2.5cm
+\bottommargin 2.5cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+BALANCE POWER DIAGRAM FOR REDISTRICTING
+\end_layout
+
+\begin_layout Standard
+We explore a particular approach to redistricting: balanced centroidal power
+ diagrams.
+ Given the locations of a state’s m residents and the desired number k of
+ districts, a balanced centroidal power diagram partitions the state into
+ k districts with the districts’ populations differ by at most one[reference].
+ 
+\end_layout
+
+\begin_layout Standard
+A balanced centroidal power diagram is a particular kind of solution to
+ an optimization problem called balanced k-means clustering: given a set
+ 
+\begin_inset Formula $P$
+\end_inset
+
+ of 
+\begin_inset Formula $m$
+\end_inset
+
+ points (the residents) and the desired number 
+\begin_inset Formula $k$
+\end_inset
+
+ of clusters, a solution consists of a sequence 
+\begin_inset Formula $C$
+\end_inset
+
+ of 
+\begin_inset Formula $k$
+\end_inset
+
+ points (the centres) and an assignment 
+\begin_inset Formula $f$
+\end_inset
+
+ of residents to centres that is balanced: it assigns 
+\begin_inset Formula $\left\lfloor m/k\right\rfloor $
+\end_inset
+
+ residents to the first 
+\begin_inset Formula $i$
+\end_inset
+
+ centres, and 
+\begin_inset Formula $\left\lceil m/k\right\rceil $
+\end_inset
+
+ residents to the remaining 
+\begin_inset Formula $k−i$
+\end_inset
+
+ centres (for the 
+\begin_inset Formula $i$
+\end_inset
+
+ such that 
+\begin_inset Formula $i\left\lfloor m/k\right\rfloor +(k−i)\left\lceil m/k\right\rceil =m$
+\end_inset
+
+).
+ The cost of a solution 
+\begin_inset Formula $(C,f)$
+\end_inset
+
+ is the sum, over the residents, of the square of the Euclidean distance
+ between the resident’s location and assigned centre.
+ In balanced k-means clustering, one seeks a solution of minimum cost.
+\end_layout
+
+\begin_layout Standard
+A balanced centroidal power diagram arises from a solution to balanced k-means
+ clustering that is not necessarily of minimum cost.
+ Instead, the solution 
+\begin_inset Formula $(C,f)$
+\end_inset
+
+ only needs to be a local minimum, meaning that it is not possible to lower
+ the cost by just varying 
+\begin_inset Formula $f$
+\end_inset
+
+ (leaving
+\begin_inset Formula $C$
+\end_inset
+
+ fixed), or just varying 
+\begin_inset Formula $C$
+\end_inset
+
+ (leaving 
+\begin_inset Formula $f$
+\end_inset
+
+ fixed).
+ Hence we have used a variant of Lloyd’s algorithm: start with a random
+ set 
+\begin_inset Formula $C$
+\end_inset
+
+ of centres, then repeat the following steps until an equilibrium is reached:
+ (1) given the current set 
+\begin_inset Formula $C$
+\end_inset
+
+ of centres, compute a balanced assignment 
+\begin_inset Formula $f$
+\end_inset
+
+ that minimizes the cost; (2) given that assignment 
+\begin_inset Formula $f$
+\end_inset
+
+, change the locations of the centres in 
+\begin_inset Formula $C$
+\end_inset
+
+ to minimize the cost.
+\end_layout
+
+\begin_layout Section
+Formulation and Algorithm
+\end_layout
+
+\begin_layout Standard
+The problem in step 1 can be converted minimum cost flow problem.
+ Firstly we consider the formation of power diagram 
+\begin_inset Formula $P(C,w)$
+\end_inset
+
+ which is defined as follows.
+ For any centre 
+\begin_inset Formula $x\in C$
+\end_inset
+
+, the weighted squared distance from any point 
+\begin_inset Formula $y$
+\end_inset
+
+ to 
+\begin_inset Formula $x$
+\end_inset
+
+ is 
+\begin_inset Formula $d^{2}(y,x)−W_{x}$
+\end_inset
+
+.
+ The power region 
+\begin_inset Formula $C_{x}$
+\end_inset
+
+ associated with 
+\begin_inset Formula $x$
+\end_inset
+
+ consists of all points whose weighted squared distance to 
+\begin_inset Formula $x$
+\end_inset
+
+ is no more than the weighted squared distance to any other centre.
+ We calculate the total cost as follows: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sum_{y\in P,x\text{\in}c}d^{2}(y,x)-W_{x}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We convert the above problem to minimization problems as follows,
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Minimize
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula 
+\[
+\sum_{y\in P,x\text{\in}c}d^{2}(y,x)a_{yx}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Subjected to 
+\begin_inset Formula 
+\[
+\sum_{y\text{\in}P}a_{yx}=\mu_{x}\;\;\;\;\;\;\;\;(x\in C)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sum_{x\in c}a_{yx}=1\;\;\;\;\;\;\;\;(y\in P)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+a_{yx}\geq0\;\;\;\;\;\;\;\;(y\in P,x\in C)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here, 
+\begin_inset Formula $u_{x}\text{∈}{\left\lfloor m/k\right\rfloor ,\left\lceil m/k\right\rceil }$
+\end_inset
+
+ and 
+\begin_inset Formula $a_{yx}$
+\end_inset
+
+ represent the assignment of 
+\begin_inset Formula $y$
+\end_inset
+
+ to centre 
+\begin_inset Formula $x$
+\end_inset
+
+.
+ As the data of individual residents was not available, instead a tract
+ wise data was available, we modified the above problem in the following
+ manner,
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Minimize
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula 
+\[
+\sum_{y\in P,x\text{\in}c}d^{2}(y,x)a_{yx}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Subjected to 
+\begin_inset Formula 
+\[
+\sum_{y\text{\in}P}P_{y}\,a_{yx}=\mu_{x}(1+T)\;\;\;\;\;\;\;\;(x\in C)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sum_{x\in c}a_{yx}=1\;\;\;\;\;\;\;\;(y\in P)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+a_{yx}\geq0\;\;\;\;\;\;\;\;(y\in P,x\in C)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here 
+\begin_inset Formula $P$
+\end_inset
+
+ represent set of tracts and 
+\begin_inset Formula $C$
+\end_inset
+
+ represent set of centres of districts.
+ 
+\begin_inset Formula $u_{x}\text{∈}{\left\lfloor m/k\right\rfloor ,\left\lceil m/k\right\rceil }$
+\end_inset
+
+ and 
+\begin_inset Formula $a_{yx}$
+\end_inset
+
+ represent the assignment of a tract 
+\begin_inset Formula $y$
+\end_inset
+
+ to district centre 
+\begin_inset Formula $x$
+\end_inset
+
+.
+ 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $P_{y}$
+\end_inset
+
+ is the population of tract 
+\begin_inset Formula $y$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+.
+ 
+\begin_inset Formula $T$
+\end_inset
+
+ introduced reperesent the tolerence limit set by us.
+ 
+\end_layout
+
+\begin_layout Standard
+Once the cost flow problem is solved, we move to the second stage in which
+ we balance the centre of districts by the following update
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x=\frac{\sum_{y\overset{f}{\longrightarrow}x}P_{y}X_{y}}{\sum_{y\overset{f}{\longrightarrow}x}P_{y}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where 
+\begin_inset Formula $X_{y}$
+\end_inset
+
+ is the centroid of tract 
+\begin_inset Formula $y$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We repeat step 1 and step 2 in one iteration, and we keep repeating this
+ process until the new assignment becomes equal to the last iteration assignment.
+ 
+\end_layout
+
+\begin_layout Section
+Experiment
+\end_layout
+
+\begin_layout Standard
+We run our experiment into two parts.
+ In the first part, we perform election based on a newly districted map
+ created by us using 2018 election data.
+ We have used the data of tract population from 2010 census data.
+ In election data of 2018, county wise number of votes for the Republican
+ party and the Democratic party was available.
+ We assumed that the tract voter choice ratio for Republic and Democrat
+ is equal to voter choice ratio of the county to which it belongs.
+ Also, the turnout percentage and percentage of eligible voters of the tract
+ was assumed to be same as of that county to which the tract belongs.
+ 
+\end_layout
+
+\begin_layout Standard
+In the second part, we perform election based on newly districted maps created
+ by us using 2020 presidential election data.
+ We made two maps.
+ In one map we have used census 2010 data to get tract population and maps
+ was generated using this population data.
+ For the second map, we took an extrapolated data of the population.
+ We had a data of county wise extrapolated population available to us.
+ We assumed the percentage change in the tract population to be equal to
+ the percentage change in the county population to which it belongs.
+ As the data was extrapolated, it better represents the tract population
+ in the present compared to 2010 census data.
+ We have used the same assumption used in the first part of the experiment
+ with the only difference being the election data used now is 2020 presidential
+ election data.
+ 
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+Both the software makes the job of PCB designing really easy.
+ The majority of the required components are available in the preinstalled
+ library of both software.
+ The process of adding a new library is also straightforward.
+ As explained in the lab 1 report, a new library can also be created if
+ required.
+ The availability of an autorouting tool and a fully developed and professional
+ GUI makes the Altium an excellent choice for PCB designing.
+ Though designing PCB in KiCad is straightforward, the GUI must be developed
+ to make it more user friendly.
+ 
+\end_layout
+
+\end_body
+\end_document

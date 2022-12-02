@@ -1,0 +1,9 @@
+E(\underline{u},\underline{c}) = \frac{1}{2}\sum_{i=1}^{N}\sum_{x,y \in V}u_{i}(x)A(x,y)(1-u_{i}(y))+\alpha \sum_{i=1}^{N}\sum_{x \in V}u_{i}||c_{i}(x)-c(x)||^{2}
+
+psi_{i}(x) = \alpha||c_{i}(x)-c(x)|| - \sum_{y \in V}A(x,y)u_{i}(x)
+
+\psi_{i}^{n+1}(x) = \alpha||c_{i}^{n}(x)-c(x)||^{2} - \sum_{y \in V}A(x,y)u_{i}^{n}(x)
+
+\psi_{i}^{n+1}(x) = \alpha\frac{||c_{i}^{n}(x)-c(x)||^{2}}{max(||c_{i}^{n}(x)-c(x)||^{2})} - \sum_{y \in V}A(x,y)u_{i}^{n}(x)
+
+
