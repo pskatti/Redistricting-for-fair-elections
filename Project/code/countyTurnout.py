@@ -64,30 +64,30 @@ df2.to_excel(writer, sheet_name = 'Sheet2')
 df3.to_excel(writer, sheet_name = 'Sheet3')
 df4.to_excel(writer, sheet_name = 'Sheet4')
 writer.save()
-	# horentry = ["", "", "", "", ""]
-	# dem = []
-	# rep = []
-	# for i in data:
-	# 	name = i['cnm']
-	# 	if name == "US PRESIDENT (VOTE FOR 1)" and i['pty'] == "DEM":
-	# 		dem.append(i['vct'])
-	# 		dem.append(i['pct'])
-	# 	if name == "US PRESIDENT (VOTE FOR 1)" and i['pty'] == "REP":
-	# 		rep.append(i['vct'])
-	# 		rep.append(i['pct'])
+	horentry = ["", "", "", "", ""]
+	dem = []
+	rep = []
+	for i in data:
+		name = i['cnm']
+		if name == "US PRESIDENT (VOTE FOR 1)" and i['pty'] == "DEM":
+			dem.append(i['vct'])
+			dem.append(i['pct'])
+		if name == "US PRESIDENT (VOTE FOR 1)" and i['pty'] == "REP":
+			rep.append(i['vct'])
+			rep.append(i['pct'])
 
-	# row[n].extend(dem)
-	# row[n].extend(rep)
+	row[n].extend(dem)
+	row[n].extend(rep)
 
-# df = pd.DataFrame(row, columns = ['CountyName', 'BallotsCast', 'OutOf', 'Turnout', 'No.OfPrecincts', 'DEM-PRES-VOTES', 'DEM-PRES-PERCENT', 'REP-PRES-VOTES', 'REP-PRES-PERCENT'])
-# df.to_excel('Turnout.xlsx')
-		#name =  name[:9]
-		# if name == "US HOUSE":
-		# 	if len(horentry) == 0:
-		# 		horentry[0] =i['cnm']
-		# 	if i['pty'] == "DEM":
-		# 		horentry[1] = i['vct']
-		# 		horentry[2] = i['pct']
-		# 	elif i['pty'] == "REP":
-		# 		horentry[1] = i['vct']
-		# 		horentry[2] = i['pct']
+df = pd.DataFrame(row, columns = ['CountyName', 'BallotsCast', 'OutOf', 'Turnout', 'No.OfPrecincts', 'DEM-PRES-VOTES', 'DEM-PRES-PERCENT', 'REP-PRES-VOTES', 'REP-PRES-PERCENT'])
+df.to_excel('Turnout.xlsx')
+		name =  name[:9]
+		if name == "US HOUSE":
+			if len(horentry) == 0:
+				horentry[0] =i['cnm']
+			if i['pty'] == "DEM":
+				horentry[1] = i['vct']
+				horentry[2] = i['pct']
+			elif i['pty'] == "REP":
+				horentry[1] = i['vct']
+				horentry[2] = i['pct']
